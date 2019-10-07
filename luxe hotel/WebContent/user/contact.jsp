@@ -38,15 +38,9 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
 				style="width: 30px"></i> Phone: +00 151515<br> <i
 				class="fa fa-envelope w3-text-blue" style="width: 30px"> </i> Email:
 			mail@mail.com<br>
-			<form action="/action_page.php" target="_blank">
-				<p>
-					<input class="w3-input w3-padding-16 w3-border" type="text"
-						placeholder="Name" required name="Name">
-				</p>
-				<p>
-					<input class="w3-input w3-padding-16 w3-border" type="text"
-						placeholder="Email" required name="Email">
-				</p>
+			<form action="../SendMessageByUser" method="post">
+				<input type="text" name="current_user" value='<%= session.getAttribute( "LogedInUserName" ) %>' style="display: none;">
+				<p><input class="w3-input w3-padding-16 w3-border" type="text" placeholder="Email" required name="Email"></p>
 				<p>
 					<input class="w3-input w3-padding-16 w3-border" type="text"
 						placeholder="Message" required name="Message">

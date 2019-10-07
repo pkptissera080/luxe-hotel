@@ -24,8 +24,20 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
   cursor: pointer;
   transition: 0.25s;
   border-radius: 20px;
+  outline: none;
 }
-
+.edit_btn{
+	background-color: gray;
+  color: white;
+  padding: 8px 16px;
+  font-size: 10px;
+  cursor: pointer;
+  transition: 0.25s;
+  outline: none;
+  border:none;
+  margin-left: 20px;
+  border-radius: 20px;
+}
 .success {
   border-color: #4CAF50;
   color: green;
@@ -78,6 +90,17 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
   		cursor: pointer;
         background: #ffc107;
         color: #000;
+}
+input{
+		border: none;
+        border-bottom: 1px solid darkgray;
+        background: transparent;
+        outline: none;
+        height: 40px;
+        color: darkgray;
+        font-size: 16px;
+        transition: 0.25s;
+        margin-left: 20px;
 }
 </style>
 <body class="w3-light-grey">
@@ -158,14 +181,28 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
 								<td><label
 									style="font-family: monospace; color: gray; border: 2px solid gray; padding: 8px;">
 										<%=resultSet.getString("dateNtime")%></label></td>
+										<td><button  class="edit_btn" onclick="hide_show_inputs(<%=resultSet.getString("id")%>)" id="hide_show_inputs_btn_<%=resultSet.getString("id")%>">Edit</button></td>
 							</tr>
 						</table>
-
+						
+						<form action="../UpdateMyRequest" method="post">
 						<ul>
-							<li>Adults : <b><%=resultSet.getString("Adults")%></b></li>
-							<li>Kids : <b><%=resultSet.getString("Kids")%></b></li>
-							<li>CheckIn Date : <b><%=resultSet.getString("CheckIn")%></b></li>
-							<li>CheckOut Date : <b><%=resultSet.getString("CheckOut")%></b></li>
+							<li>Adults : 
+								<b id="Adults_display_val_<%=resultSet.getString("id")%>"><%=resultSet.getString("Adults")%></b>
+								<input type="number" name="Adults_update_input" id="Adults_update_input_<%=resultSet.getString("id")%>"  min="1" max="6" value='<%=resultSet.getString("Adults")%>' style="display: none;">
+							</li>
+							<li>Kids : 
+								<b id="Kids_display_val_<%=resultSet.getString("id")%>"><%=resultSet.getString("Kids")%></b>
+								<input type="number" name="Kids_update_input" id="Kids_update_input_<%=resultSet.getString("id")%>" min="0" max="6"    value='<%=resultSet.getString("Kids")%>' style="display: none;">
+							</li>
+							<li>CheckIn Date : 
+								<b id="CheckIn_display_val_<%=resultSet.getString("id")%>"><%=resultSet.getString("CheckIn")%></b>
+								<input type="date" name="CheckIn_update_input" id="CheckIn_update_input_<%=resultSet.getString("id")%>" required="required" value='<%=resultSet.getString("CheckIn")%>' style="display: none;">
+							</li>
+							<li>CheckOut Date : 
+								<b id="CheckOut_display_val_<%=resultSet.getString("id")%>"><%=resultSet.getString("CheckOut")%></b>
+								<input type="date" name="CheckOut_update_input" id="CheckOut_update_input_<%=resultSet.getString("id")%>" required="required" value='<%=resultSet.getString("CheckOut")%>' style="display: none;">
+							</li>
 							<%
 								if (resultSet.getString("Status").equals("1")) {
 							%>
@@ -177,11 +214,16 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
 							} else {
 						%>
 						</ul>
-
+						
+							<input style="display: none;" type="text" name="req_id"
+								value='<%=resultSet.getString("id")%>'>
+							<button type="submit" class="btn success" id="save_btn_<%=resultSet.getString("id")%>" 
+								style="margin-left: 20px; margin-bottom: 20px; display: none;">Save</button>
+						</form>
 						<form action="../DeletRequestByUser" method="post">
 							<input style="display: none;" type="text" name="req_id"
 								value='<%=resultSet.getString("id")%>'>
-							<button type="submit" class="btn danger"
+							<button type="submit" class="btn danger" id="delete_btn_<%=resultSet.getString("id")%>"
 								style="margin-left: 20px; margin-bottom: 20px;">Delete</button>
 						</form>
 						<%
@@ -220,6 +262,50 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
   </div>
 </footer>
 
+<script type="text/javascript">
+	
+	function hide_show_inputs(xx) {
+		
+		var hide_show_inputs_btn_txt = document.getElementById('hide_show_inputs_btn_'+xx+'').innerText;
+		if(hide_show_inputs_btn_txt == 'Edit'){
+
+			document.getElementById('hide_show_inputs_btn_'+xx+'').innerText = "Cancel";
+			document.getElementById('hide_show_inputs_btn_'+xx+'').style.background = "red";
+			document.getElementById('delete_btn_'+xx+'').style.display = "none";
+			document.getElementById('save_btn_'+xx+'').style.display = "";
+
+			document.getElementById('Adults_display_val_'+xx+'').style.display = "none";
+			document.getElementById('Kids_display_val_'+xx+'').style.display = "none";
+			document.getElementById('CheckIn_display_val_'+xx+'').style.display = "none";
+			document.getElementById('CheckOut_display_val_'+xx+'').style.display = "none";
+
+			document.getElementById('Adults_update_input_'+xx+'').style.display = "";
+			document.getElementById('Kids_update_input_'+xx+'').style.display = "";
+			document.getElementById('CheckIn_update_input_'+xx+'').style.display = "";
+			document.getElementById('CheckOut_update_input_'+xx+'').style.display = "";
+
+		}
+		else{
+			document.getElementById('hide_show_inputs_btn_'+xx+'').innerText = "Edit";
+			document.getElementById('hide_show_inputs_btn_'+xx+'').style.background = "gray";
+			document.getElementById('delete_btn_'+xx+'').style.display = "";
+			document.getElementById('save_btn_'+xx+'').style.display = "none";
+
+			document.getElementById('Adults_display_val_'+xx+'').style.display = "";
+			document.getElementById('Kids_display_val_'+xx+'').style.display = "";
+			document.getElementById('CheckIn_display_val_'+xx+'').style.display = "";
+			document.getElementById('CheckOut_display_val_'+xx+'').style.display = "";
+
+			document.getElementById('Adults_update_input_'+xx+'').style.display = "none";
+			document.getElementById('Kids_update_input_'+xx+'').style.display = "none";
+			document.getElementById('CheckIn_update_input_'+xx+'').style.display = "none";
+			document.getElementById('CheckOut_update_input_'+xx+'').style.display = "none";
+		}
+
+		
+	}
+
+</script>
 
 </body>
 </html>

@@ -46,8 +46,6 @@ public class ConfirmRequestByManager extends HttpServlet {
         try {
         	String req_id_val = request.getParameter("req_id");
         	String room_number_val = request.getParameter("room_number");
-        	out.println(req_id_val);
-        	out.println(room_number_val);
             
                 DB_Connection obj_DB_Connection = new DB_Connection();
                 Connection connection = obj_DB_Connection.get_connection();

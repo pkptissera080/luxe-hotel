@@ -15,16 +15,16 @@ import javax.servlet.http.HttpServletResponse;
 import common.DB_Connection;
 
 /**
- * Servlet implementation class ConfirmRoomByOwner
+ * Servlet implementation class SendMessageByUser
  */
-@WebServlet("/ConfirmRoomByOwner")
-public class ConfirmRoomByOwner extends HttpServlet {
+@WebServlet("/SendMessageByUser")
+public class SendMessageByUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ConfirmRoomByOwner() {
+    public SendMessageByUser() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -44,26 +44,26 @@ public class ConfirmRoomByOwner extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-        	String req_id_val = request.getParameter("req_id");
-        	String room_number_val = request.getParameter("room_number");
-            
+        	String current_user_val = request.getParameter("current_user");
+            String Message_val = request.getParameter("Message");
+        	String Email_val = request.getParameter("Email");
                 DB_Connection obj_DB_Connection = new DB_Connection();
                 Connection connection = obj_DB_Connection.get_connection();
                 PreparedStatement ps = null;
-                
-                String sql = "UPDATE rooms SET Status = ?, RoomNo= ? WHERE id = ? ";
+
+                String sql = "insert into messages (message, senderName, senderEmail) values(?,?,?)";
                 Class.forName("com.mysql.jdbc.Driver");
                 
                 ps = connection.prepareStatement(sql);
-                ps.setString(1, "1");
-                ps.setString(2, room_number_val);
-                ps.setString(3, req_id_val);
+                ps.setString(1, Message_val);
+                ps.setString(2, current_user_val);
+                ps.setString(3, Email_val);
 
                 
                 ps.executeUpdate();
                 out.println("<script type=\"text/javascript\">");
-                out.println("alert('Request Confirmed !');");
-                out.println("location='owner/allrequests.jsp';");
+                out.println("alert('Message has benn Send ! ');");
+                out.println("location='user/contact.jsp';");
                 out.println("</script>");
 
 
