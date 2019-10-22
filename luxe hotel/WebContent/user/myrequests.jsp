@@ -208,6 +208,7 @@ input{
 							%>
 							<li>Room No : <b
 								style="background-color: yellow; padding: 2px 8px 2px 8px;"><%=resultSet.getString("RoomNo")%></b></li>
+								</form>
 						</ul>
 						<p class="ConfirmedLbl">Confirmed</p>
 						<%
