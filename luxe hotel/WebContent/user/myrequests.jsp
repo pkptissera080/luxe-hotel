@@ -209,6 +209,9 @@ input{
 							<li>Room No : <b
 								style="background-color: yellow; padding: 2px 8px 2px 8px;"><%=resultSet.getString("RoomNo")%></b></li>
 								</form>
+								<script type="text/javascript">
+								 document.getElementById("hide_show_inputs_btn_<%=resultSet.getString("id")%>").style.display ="none";
+								</script>
 						</ul>
 						<p class="ConfirmedLbl">Confirmed</p>
 						<%
